@@ -35,5 +35,13 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware'=>'isLogin'],fu
     Route::get('welcome','LoginController@welcome');
     //后台管理用户注销
     Route::get('logout', 'LoginController@logout');
+
+    //后台管理用户模块相关资源路由
+    Route::resource('user','UserController');
+    // 修改管理用户状态路由 启用 停用
+    Route::post('user/changestatus','UserController@changeStatus');
+    // 删除所有选中管理用户路由
+    Route::post('user/del','UserController@delAll');
+
 });
 

@@ -89,7 +89,7 @@
             <td>{{$v->user_name}}</td>
             <td>{{$v->email}}</td>
             <td>{{$v->phone}}</td>
-            @if($v->status == 0)
+            @if($v->status == 1)
             <td class="td-status">
               <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
             </td>
@@ -106,10 +106,6 @@
                   <i class="layui-icon">&#xe62f;</i>
                 </a>
              @endif
-              <a title="用户授权"
-                 href="{{url('admin/user/auth/'. $v->user_id)}}">
-                <i class="layui-icon">&#xe612;</i>
-              </a>
               <a title="编辑"  onclick="x_admin_show('编辑','{{url('admin/user/'. $v->user_id. '/edit/?tag=edit')}}',600,405)"
                  href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
@@ -158,10 +154,10 @@
           $(obj).attr('title') == '启用' ? str = '启用' : str = '停用';
           layer.confirm('确认'+str+'吗?',function(index){
               var status = $(obj).attr('status');
-              if (status == 0) {
-                  status = 1;
-              } else {
+              if (status == 1) {
                   status = 0;
+              } else {
+                  status = 1;
               }
               $.post("user/changestatus", { 'status': status,'id':id, "_token": "{{csrf_token()}}"}, function(data){
                   if (data.status !== undefined) {
@@ -252,12 +248,6 @@
         });
       }
     </script>
-    <script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();</script>
   </body>
 
 </html>

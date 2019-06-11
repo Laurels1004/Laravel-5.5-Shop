@@ -132,24 +132,12 @@
                   }
 
               });
-            // layer.alert("增加成功", {icon: 6},function () {
-            //     // 获得frame索引
-            //     var index = parent.layer.getFrameIndex(window.name);
-            //     //关闭当前frame
-            //     parent.layer.close(index);
-            // });
             return false;
           });
 
 
         });
     </script>
-    <script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();</script>
   </body>
 
 </html>

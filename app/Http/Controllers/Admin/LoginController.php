@@ -67,7 +67,6 @@ class LoginController extends Controller
 
         //2.3生成表单验证
         $validator = Validator::make($input, $rule, $msg);
-
         if ($validator->fails()) {
             return redirect('admin/login')
                 ->withErrors($validator)
@@ -82,7 +81,6 @@ class LoginController extends Controller
 
         // 3.验证是否有此用户(用户名 密码 验证码)
         $user = User::where('user_name', $input['username'])->first();
-
         if (!$user) {
             return redirect('admin/login')->with('errors', '该用户不存在!');
         } elseif ($input['password'] != Crypt::decrypt($user->user_pass)) {
@@ -107,7 +105,6 @@ class LoginController extends Controller
     public function welcome(){
         return view('admin.welcome');
     }
-
 
     //后台管理用户注销
     public function logout(){

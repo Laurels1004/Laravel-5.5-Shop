@@ -104,61 +104,6 @@
           elem: '#end' //指定元素
         });
       });
-      $('.cateorder').hover(function()
-      {
-          layer.tips('双击可修改', $(this), {
-              tips: [1, '#3595CC'],
-              time: 1000
-          });
-      });
-
-      $('.cateorder').dblclick(function()
-      {
-          //获取value
-          var cateorder = $(this).html();
-          //清除文本值
-          $(this).empty();// == JS innerHTML = null
-          // 判断
-          if(cateorder == '<input type="text">') {
-              cateorder = '';
-          }
-          //创建一个input
-          var input = $("<input class='layui-input' style='width:40px;height:22px' type='text'>");
-          //给input赋value
-          input.val(cateorder);
-          //内部插入input
-          $(this).append(input);
-          //获取焦点事件
-          input.focus();
-          //select选中当前文本值
-          // 当textarea 或文本类型的input元素中的文本被选择时,会发生select事件
-          input.select();
-          var td = $(this);
-          //绑定失去焦点
-          input.blur(function()
-          {
-              //获取当前id和修改后的值
-              var newCateorder = $(this).val();
-              if (cateorder == newCateorder) {
-                  td.html(cateorder);
-                  layer.msg('分类序号未作修改!');
-              } else {
-                  var id = $(this).parents("tr").find("td:eq(2)").html();
-                  $.post('/admin/cate/changeorder', {'_token': "{{csrf_token()}}", "cateid": id, "cateorder": newCateorder}, function(data)
-                  {
-                      if (data.status == 0) {
-                          td.html(newCateorder);
-                          layer.msg(data.message);
-                          layer.tips('点此刷新', '#refresh');
-
-                      } else {
-                          td.html(cateorder);
-                          layer.msg(data.message,function(){});
-                      }
-                  });
-              }
-          });
-      });
 
       /*分类-删除*/
       function member_del(obj,id) {
@@ -190,7 +135,7 @@
             var u = $(v).attr('data-id');
             ids.push(u);
         });
-
+        console.log(ids);
 
         layer.confirm('确认要删除吗？',function(index){
             $.post('cate/del', {'ids': ids, "_token": "{{csrf_token()}}"}, function(data) {
@@ -208,12 +153,6 @@
         });
       }
     </script>
-    <script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();</script>
   </body>
 
 </html>

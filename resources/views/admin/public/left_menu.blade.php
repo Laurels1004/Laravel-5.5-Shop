@@ -55,13 +55,13 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="{{url('admin/article')}}">
+                        <a _href="{{url('admin/goods')}}">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>商品列表</cite>
                         </a>
                     </li >
                     <li>
-                        <a _href="{{url('admin/article/create')}}">
+                        <a _href="{{url('admin/goods/create')}}">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>商品添加</cite>
                         </a>

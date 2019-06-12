@@ -46,6 +46,16 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label for="L_order" class="layui-form-label">
+                <span class="x-red">*</span>分类排序
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_order" value="{{$cate->cate_order}}" name="cateorder" required=""
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label for="L_repass" class="layui-form-label">
             </label>
             <button  class="layui-btn" lay-filter="eidt" lay-submit="">
@@ -104,12 +114,5 @@
 
     });
 </script>
-<script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-    })();</script>
 </body>
-
 </html>

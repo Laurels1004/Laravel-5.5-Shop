@@ -43,5 +43,9 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware'=>'isLogin'],fu
     // 删除所有选中管理用户路由
     Route::post('user/del','UserController@delAll');
 
+    //后台分类模块资源路由
+    Route::resource('cate','CateController');
+    //删除所有选中分类路由
+    Route::post('cate/del','CateController@delAll');
 });
 

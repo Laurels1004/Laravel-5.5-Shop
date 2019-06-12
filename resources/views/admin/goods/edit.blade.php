@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  
+
   <head>
     <meta charset="UTF-8">
     <title>欢迎页面-X-admin2.0</title>
@@ -11,7 +11,7 @@
       @include('admin.public.styles')
       @include('admin.public.script')
   </head>
-  
+
   <body>
     <div class="x-body">
         <form class="layui-form">
@@ -23,7 +23,7 @@
                     <select name="cate_id">
                         {{--<option value="0">==顶级分类==</option>--}}
                         @foreach($cates as $k=>$v)
-                            @if($v->cate_id == $arts->cate_id)
+                            @if($v->cate_id == $goods->cate_id)
                             <option selected value="{{ $v->cate_id }}">{{ $v->cate_name }}</option>
                             @else
                             <option  value="{{ $v->cate_id }}">{{ $v->cate_name }}</option>
@@ -37,28 +37,28 @@
             </div>
 
             <div class="layui-form-item">
-                <label for="L_art_title" class="layui-form-label">
+                <label for="L_goods_title" class="layui-form-label">
                     <span class="x-red">*</span>文章标题
                 </label>
                 <div class="layui-input-block">
                     {{csrf_field()}}
-                    <input type="text" id="L_art_title" name="art_title" required=""
-                           autocomplete="off" class="layui-input" value="{{ $arts->art_title }}">
+                    <input type="text" id="L_goods_title" name="goods_title" required=""
+                           autocomplete="off" class="layui-input" value="{{ $goods->goods_title }}">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="L_art_editor" class="layui-form-label">
+                <label for="L_goods_editor" class="layui-form-label">
                     <span class="x-red">*</span>编辑
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_art_editor" name="art_editor" required=""
-                           autocomplete="off" class="layui-input" value="{{ $arts->art_editor }}">
+                    <input type="text" id="L_goods_editor" name="goods_editor" required=""
+                           autocomplete="off" class="layui-input" value="{{ $goods->goods_editor }}">
                 </div>
             </div>
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">缩略图</label>
                 <div class="layui-input-block layui-upload">
-                    <input type="hidden" id="img1" class="hidden" name="art_thumb" value="">
+                    <input type="hidden" id="img1" class="hidden" name="goods_thumb" value="">
                     <button type="button" class="layui-btn" id="test1">
                         <i class="layui-icon">&#xe67c;</i>修改图片
                     </button>
@@ -69,28 +69,28 @@
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label"></label>
                 <div class="layui-input-block">
-                    <img src="{{ $arts->art_thumb }}" alt="" id="art_thumb_img" style="max-width: 350px; max-height:100px;">
+                    <img src="{{ $goods->goods_thumb }}" alt="" id="goods_thumb_img" style="max-width: 350px; max-height:100px;">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="L_art_tag" class="layui-form-label">
+                <label for="L_goods_tag" class="layui-form-label">
                     <span class="x-red">*</span>关键词
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_art_tag" name="art_tag" required=""
-                           autocomplete="off" class="layui-input" value="{{ $arts->art_tag }}">
+                    <input type="text" id="L_goods_tag" name="goods_tag" required=""
+                           autocomplete="off" class="layui-input" value="{{ $goods->goods_tag }}">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="L_art_tag" class="layui-form-label">
+                <label for="L_goods_tag" class="layui-form-label">
                     <span class="x-red">*</span>描述
                 </label>
                 <div class="layui-input-block">
-                    <textarea placeholder="请输入内容" class="layui-textarea" name="art_description">{{ $arts->art_description }}</textarea>
+                    <textarea placeholder="请输入内容" class="layui-textarea" name="goods_description">{{ $goods->goods_description }}</textarea>
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="L_art_tag" class="layui-form-label">
+                <label for="L_goods_tag" class="layui-form-label">
                     <span class="x-red">*</span>内容
                 </label>
                 <div class="layui-input-block">
@@ -99,7 +99,7 @@
                     <script type="text/javascript" charset="utf-8" src="/ueditor/lang/zh-cn/zh-cn.js"></script>
 
 
-                    <script id="editor" type="text/plain" name="art_content" style="width:600px;height:300px;">{!! $arts->art_content !!}</script>
+                    <script id="editor" type="text/plain" name="goods_content" style="width:600px;height:300px;">{!! $goods->goods_content !!}</script>
                     <script type="text/javascript">
 
                     //实例化编辑器
@@ -115,7 +115,7 @@
                 </div>
             </div>
           <div class="layui-form-item">
-              <input type="hidden" name="artid" value="{{ $arts->art_id }}">
+              <input type="hidden" name="goodid" value="{{ $goods->goods_id }}">
               <label for="L_repass" class="layui-form-label">
               </label>
               <button  class="layui-btn" lay-filter="edit" lay-submit="">
@@ -132,7 +132,7 @@
           var upload = layui.upload;
           var uploadInst = upload.render({
               elem: '#test1'
-              ,url: '/admin/article/upload'
+              ,url: '/admin/goods/upload'
               ,before: function(obj){
                   layer.load();
 
@@ -144,13 +144,13 @@
                       return layer.msg('上传失败');
                   }
                   var _this = this.item;
-                  // $(_this).parent('.layui-upload').find("input[name='art_thumb']").val(11111);
-                  $("input[name='art_thumb']").val('/uploads/'+res.data.src);
+                  // $(_this).parent('.layui-upload').find("input[name='goods_thumb']").val(11111);
+                  $("input[name='goods_thumb']").val('/uploads/'+res.data.src);
                   // console.log(test);
                   console.log(res.data.src);
                   //上传成功
                   // 显示图片
-                  $('#art_thumb_img').attr('src','/uploads/'+res.data.src);
+                  $('#goods_thumb_img').attr('src','/uploads/'+res.data.src);
               }
               ,error: function(){
                   //演示失败状态，并实现重传
@@ -165,11 +165,11 @@
 
         //监听提交
         form.on('submit(edit)', function(data){
-            var artid = $("input[name='artid']").val();
+            var goodid = $("input[name='goodid']").val();
             //console.log(uid);
             $.ajax({
                 type: 'PUT',
-                url: '/admin/article/'+artid,
+                url: '/admin/goods/'+goodid,
                 dataType: 'json',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -196,8 +196,8 @@
             });
           return false;
         });
-        
-        
+
+
       });
   </script>
     <script>var _hmt = _hmt || []; (function() {

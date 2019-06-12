@@ -50,13 +50,13 @@
                 {{--<input type="text"  onchange="changeOrder(this,{{ $v->cate_id }})" value="{{ $v->cate_order }}"  autocomplete="off" class="layui-input">--}}
               {{--</div>--}}
             {{--</td>--}}
-            <td>{{ $v['art_id'] }}</td>
-            <td>{{ $v['art_title'] }}</td>
-            <td>{{ $v['art_tag'] }}</td>
-            <td style="width:30px;">{{ $v['art_view'] }}</td>
-            <td><img src="{{ $v['art_thumb'] }}" alt="" style="width:90px;height:50px;"></td>
+            <td>{{ $v['goods_id'] }}</td>
+            <td>{{ $v['goods_title'] }}</td>
+            <td>{{ $v['goods_tag'] }}</td>
+            <td style="width:30px;">{{ $v['goods_view'] }}</td>
+            <td><img src="{{ $v['goods_thumb'] }}" alt="" style="width:90px;height:50px;"></td>
             <td class="td-status">
-                @if($v['art_status'] == 0)
+                @if($v['goods_status'] == 0)
               <span class="layui-btn layui-btn-normal layui-btn-mini">未加入推荐位</span>
                 @else
               <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">已添加到推荐位</span>
@@ -64,14 +64,14 @@
 
             </td>
             <td class="td-manage">
-              <a onclick="recommend(this,{{ $v['art_id'] }})" href="javascript:;" data-id="{{ $v['art_status'] }}" title="未添加">
+              <a onclick="recommend(this,{{ $v['goods_id'] }})" href="javascript:;" data-id="{{ $v['goods_status'] }}" title="未添加">
                 <i class="layui-icon">&#xe601;</i>
               </a>
-              <a title="编辑"  onclick="x_admin_show('编辑','{{ url('admin/article/'.$v['art_id'].'/edit') }}',800,600)" href="javascript:;">
+              <a title="编辑"  onclick="x_admin_show('编辑','{{ url('admin/goods/'.$v['goods_id'].'/edit') }}',800,600)" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
 
-              <a title="删除" onclick="member_del(this,{{ $v['art_id'] }})" href="javascript:;">
+              <a title="删除" onclick="member_del(this,{{ $v['goods_id'] }})" href="javascript:;">
                 <i class="layui-icon">&#xe640;</i>
               </a>
             </td>
@@ -109,7 +109,7 @@
       function member_del(obj,id){
           layer.confirm('确认要删除吗？',function(index){
               //发异步删除数据
-              $.post('{{ url('admin/article/') }}/'+id,{'_method':'delete','_token':"{{csrf_token()}}"},function (data) {
+              $.post('{{ url('admin/goods/') }}/'+id,{'_method':'delete','_token':"{{csrf_token()}}"},function (data) {
                   if(data.status == 0){
                       $(obj).parents("tr").remove();
                       layer.msg('已删除!',{icon:1,time:1000});
@@ -136,7 +136,7 @@
                   //发异步把用户状态进行更改
                   $.ajax({
                       type: "GET", //提交方式
-                      url: '/admin/article/recommend',//路径
+                      url: '/admin/goods/recommend',//路径
                       data: {"id": id, "status": status},//数据，这里使用的是Json格式进行传输
                       dataType: "Json",
                       success: function (result) {//返回数据根据结果进行相应的处理
@@ -158,7 +158,7 @@
                   //发异步把用户状态进行更改
                   $.ajax({
                       type: "GET", //提交方式
-                      url: '/admin/article/recommend',//路径
+                      url: '/admin/goods/recommend',//路径
                       data: {"id": id, "status": status},//数据，这里使用的是Json格式进行传输
                       dataType: "Json",
                       success: function (result) {//返回数据根据结果进行相应的处理

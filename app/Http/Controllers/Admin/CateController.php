@@ -15,7 +15,7 @@ class CateController extends Controller
      */
     public function index()
     {
-        // 1.执行分类处理操作
+        // 获取分类,执行分类处理操作,返回视图
         $cates = (new Cate())->format();
         $count_cates = count($cates);
         return view('admin.cate.list', compact('cates', 'count_cates'));

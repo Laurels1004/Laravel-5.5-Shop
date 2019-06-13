@@ -23,55 +23,50 @@
         <i class="layui-icon" style="line-height:30px">ဂ</i></a>
     </div>
     <div class="x-body">
-
-      <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-      </xblock>
       <table class="layui-table">
+        @if (count($goods) > 0)
         <thead>
           <tr>
-            {{--<th>--}}
-              {{--<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>--}}
-            {{--</th>--}}
             <th>ID</th>
-            <th>文章标题</th>
-            <th>标签</th>
-            <th>查看次数</th>
+            <th>商品名称</th>
             <th>缩略图</th>
-            <th>状态</th>
+            <th>商品价格(元)</th>
+            <th>商品库存(件)</th>
+            <th>商品销量(件)</th>
+            <th>商品状态</th>
+            <th>是否推荐</th>
+            <th>入库时间</th>
             <th>操作</th></tr>
         </thead>
         <tbody>
-        @foreach($arts as $v)
+        @foreach($goods as $v)
           <tr>
-            {{--<td>--}}
-              {{--<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{{ $v->user_id }}'><i class="layui-icon">&#xe605;</i></div>--}}
-              {{--<div class="layui-input-inline" style="width: 40px;">--}}
-                {{--<input type="text"  onchange="changeOrder(this,{{ $v->cate_id }})" value="{{ $v->cate_order }}"  autocomplete="off" class="layui-input">--}}
-              {{--</div>--}}
-            {{--</td>--}}
-            <td>{{ $v['goods_id'] }}</td>
-            <td>{{ $v['goods_title'] }}</td>
-            <td>{{ $v['goods_tag'] }}</td>
-            <td style="width:30px;">{{ $v['goods_view'] }}</td>
-            <td><img src="{{ $v['goods_thumb'] }}" alt="" style="width:90px;height:50px;"></td>
-            <td class="td-status">
-                @if($v['goods_status'] == 0)
-              <span class="layui-btn layui-btn-normal layui-btn-mini">未加入推荐位</span>
+            <td>{{$v->goods_id}}</td>
+            <td>{{$v->goods_name}}</td>
+            <td><img src="{{$v->goods_thumb}}" alt="" style="width:90px;height:50px;"></td>
+            <td>{{$v->goods_price}}</td>
+            <td>{{$v->goods_stock}}</td>
+            <td>{{$v->goods_sales}}</td>
+            <td class="td-active">
+                @if($v->goods_active == 0)
+              <span class="layui-btn layui-btn-normal layui-btn-mini">已上架</span>
                 @else
-              <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">已添加到推荐位</span>
+              <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">已下架</span>
                 @endif
-
             </td>
+            <td class="td-status">
+                @if($v->goods_status == 1)
+              <span class="layui-btn layui-btn-normal layui-btn-mini">已添加到推荐位</span>
+                @else
+              <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">未加入推荐位</span>
+                @endif
+            </td>
+            <td>{{date('Y-m-d-H-i',$v->goods_time)}}</td>
             <td class="td-manage">
-              <a onclick="recommend(this,{{ $v['goods_id'] }})" href="javascript:;" data-id="{{ $v['goods_status'] }}" title="未添加">
-                <i class="layui-icon">&#xe601;</i>
-              </a>
-              <a title="编辑"  onclick="x_admin_show('编辑','{{ url('admin/goods/'.$v['goods_id'].'/edit') }}',800,600)" href="javascript:;">
+              <a title="编辑"  onclick="x_admin_show('编辑','{{ url('admin/goods/'.$v->goods_id.'/edit') }}',800,600)" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
-
-              <a title="删除" onclick="member_del(this,{{ $v['goods_id'] }})" href="javascript:;">
+              <a title="删除" onclick="member_del(this,{{ $v->goods_id }})" href="javascript:;">
                 <i class="layui-icon">&#xe640;</i>
               </a>
             </td>
@@ -79,7 +74,13 @@
           @endforeach
         </tbody>
       </table>
-
+      @else
+          <tr>
+            <th>没有数据...</th>
+          </tr>
+        </tbody>
+      </table>
+      @endif
 
     </div>
     <script>
@@ -97,13 +98,7 @@
           elem: '#end' //指定元素
         });
 
-          //监听提交
-          form.on('submit(search)', function(data){
-              console.log(data);
-          });
       });
-
-
 
       /*文章-删除*/
       function member_del(obj,id){
@@ -114,67 +109,11 @@
                       $(obj).parents("tr").remove();
                       layer.msg('已删除!',{icon:1,time:1000});
                   }else{
-                      // $(obj).parents("tr").remove();
-                      layer.msg('删除失败!',{icon:1,time:1000});
+                      layer.msg('删除失败!',{icon:2,time:1000});
                   }
 
               })
-
           });
-      }
-
-
-
-
-
-      /*文章添加到推荐位*/
-      function recommend(obj,id){
-          // 获取当前记录推荐位状态
-          var status = $(obj).attr('data-id');
-          if( status == 0) {
-              layer.confirm('确认要添加到推荐位吗？', function (index) {
-                  //发异步把用户状态进行更改
-                  $.ajax({
-                      type: "GET", //提交方式
-                      url: '/admin/goods/recommend',//路径
-                      data: {"id": id, "status": status},//数据，这里使用的是Json格式进行传输
-                      dataType: "Json",
-                      success: function (result) {//返回数据根据结果进行相应的处理
-                          if (result.status == 0) {
-                              $(obj).attr('title', '已推荐')
-                              $(obj).find('i').html('&#xe62f;');
-                              $(obj).attr('data-id','1');
-
-                              $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已推荐');
-                              layer.msg('已推荐!', {icon: 6, time: 1000});
-                          } else {
-                              layer.msg('修改失败!', {icon: 5, time: 1000});
-                          }
-                      }
-                  });
-              });
-          }else{
-              layer.confirm('确认要取消推荐位吗？', function (index) {
-                  //发异步把用户状态进行更改
-                  $.ajax({
-                      type: "GET", //提交方式
-                      url: '/admin/goods/recommend',//路径
-                      data: {"id": id, "status": status},//数据，这里使用的是Json格式进行传输
-                      dataType: "Json",
-                      success: function (result) {//返回数据根据结果进行相应的处理
-                          if(result.status == 0){
-                              $(obj).attr('title','推荐位取消')
-                              $(obj).find('i').html('&#xe601;');
-                              $(obj).attr('data-id','0');
-                              $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('推荐位取消');
-                              layer.msg('推荐位取消!',{icon: 5,time:1000});
-                          }else{
-                              layer.msg('修改失败!',{icon: 5,time:1000});
-                          }
-                      }
-                  });
-              });
-          }
       }
     </script>
 

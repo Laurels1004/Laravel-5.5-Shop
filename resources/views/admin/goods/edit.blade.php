@@ -10,11 +10,16 @@
       <meta name="csrf-token" content="{{ csrf_token() }}">
       @include('admin.public.styles')
       @include('admin.public.script')
+    <style>
+        .input_width{
+            width: 188px;
+        }
+    </style>
   </head>
 
   <body>
     <div class="x-body">
-        <form class="layui-form">
+        <form class="layui-form" id="goods_form">
             <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">
                     <span class="x-red">*</span>分类
@@ -35,83 +40,110 @@
                     <span class="x-red">*</span>
                 </div>
             </div>
-
             <div class="layui-form-item">
-                <label for="L_goods_title" class="layui-form-label">
-                    <span class="x-red">*</span>文章标题
+                <label for="L_goods_name" class="layui-form-label">
+                    <span class="x-red">*</span>商品名称
                 </label>
                 <div class="layui-input-block">
                     {{csrf_field()}}
-                    <input type="text" id="L_goods_title" name="goods_title" required=""
-                           autocomplete="off" class="layui-input" value="{{ $goods->goods_title }}">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="L_goods_editor" class="layui-form-label">
-                    <span class="x-red">*</span>编辑
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="L_goods_editor" name="goods_editor" required=""
-                           autocomplete="off" class="layui-input" value="{{ $goods->goods_editor }}">
+                    <input type="text" id="L_goods_name" name="goods_name" required=""
+                           autocomplete="off" class="layui-input input_width" value="{{ $goods->goods_name }}">
                 </div>
             </div>
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">缩略图</label>
                 <div class="layui-input-block layui-upload">
-                    <input type="hidden" id="img1" class="hidden" name="goods_thumb" value="">
+                    <input type="hidden" id="img1" class="hidden" name="goods_thumb" value="{{ $goods->goods_thumb }}">
                     <button type="button" class="layui-btn" id="test1">
-                        <i class="layui-icon">&#xe67c;</i>修改图片
+                        <i class="layui-icon">&#xe67c;</i>上传图片
                     </button>
+                    <input type="file" name="photo" id="photo_upload" style="display: none;" />
                 </div>
             </div>
-
-
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label"></label>
                 <div class="layui-input-block">
-                    <img src="{{ $goods->goods_thumb }}" alt="" id="goods_thumb_img" style="max-width: 350px; max-height:100px;">
+                    <img src="{{ $goods->goods_thumb }}" id="goods_thumb_img" style="max-width: 185px; max-height:160px;" alt="">
                 </div>
             </div>
+
             <div class="layui-form-item">
-                <label for="L_goods_tag" class="layui-form-label">
-                    <span class="x-red">*</span>关键词
+                <label for="L_goods_price" class="layui-form-label">
+                    <span class="x-red">*</span>商品价格
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_goods_tag" name="goods_tag" required=""
-                           autocomplete="off" class="layui-input" value="{{ $goods->goods_tag }}">
+                    <input type="number" id="L_goods_price" name="goods_price" required=""
+                           autocomplete="off" class="layui-input input_width" value="{{ $goods->goods_price }}">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="L_goods_tag" class="layui-form-label">
-                    <span class="x-red">*</span>描述
+                <label for="L_goods_stock" class="layui-form-label">
+                    <span class="x-red">*</span>商品库存
                 </label>
-                <div class="layui-input-block">
-                    <textarea placeholder="请输入内容" class="layui-textarea" name="goods_description">{{ $goods->goods_description }}</textarea>
+                <div class="layui-input-inline">
+                    <input type="number" id="L_goods_stock" name="goods_stock" required=""
+                           autocomplete="off" class="layui-input input_width" value="{{ $goods->goods_stock }}">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="L_goods_tag" class="layui-form-label">
-                    <span class="x-red">*</span>内容
+                <label for="L_goods_sales" class="layui-form-label">
+                    <span class="x-red">*</span>商品销量
+                </label>
+                <div class="layui-input-inline">
+                    <input type="number" id="L_goods_sales" name="goods_sales" required=""
+                           autocomplete="off" class="layui-input input_width" value="{{ $goods->goods_sales }}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_goods_active" class="layui-form-label">
+                    <span class="x-red">*</span>商品状态
+                </label>
+                <div class="layui-input-inline" style="z-index: 1001">
+                    <select id="L_goods_active" name="goods_active">
+                            <option value="0">上架</option>
+                            <option value="1">下架</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_goods_status" class="layui-form-label">
+                    <span class="x-red">*</span>推荐栏位
+                </label>
+                <div class="layui-input-inline" style="z-index: 1000">
+                    <select id="L_goods_status" name="goods_status">
+                            <option value="0">否</option>
+                            <option value="1">是</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_goods_desc" class="layui-form-label">
+                    <span class="x-red">*</span>商品描述
                 </label>
                 <div class="layui-input-block">
+                    <input type="text" id="L_goods_desc" name="goods_description" required=""
+                           autocomplete="off" class="layui-input input_width" value="{{ $goods->goods_description }}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="" class="layui-form-label">
+                    <span class="x-red">*</span>详情内容
+                </label>
+                <div class="layui-input-block">
+                    {{--引入配置文件--}}
                     <script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.config.js"></script>
+                    {{--编辑器源码文件--}}
                     <script type="text/javascript" charset="utf-8" src="/ueditor/ueditor.all.min.js"> </script>
+                    {{--引入语言包--}}
                     <script type="text/javascript" charset="utf-8" src="/ueditor/lang/zh-cn/zh-cn.js"></script>
 
-
-                    <script id="editor" type="text/plain" name="goods_content" style="width:600px;height:300px;">{!! $goods->goods_content !!}</script>
+                    {{--编辑器容器--}}
+                    <script id="editor" type="text/plain" name="goods_content" style="width:600px;height:300px;z-index: 0">{!! $goods->goods_content !!}</script>
                     <script type="text/javascript">
-
                     //实例化编辑器
-                    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
                     var ue = UE.getEditor('editor');
                     </script>
-                    <style>
-                        .edui-default{line-height: 28px;}
-                        div.edui-combox-body,div.edui-button-body,div.edui-splitbutton-body
-                        {overflow: hidden; height:20px;}
-                        div.edui-box{overflow: hidden; height:22px;}
-                    </style>
                 </div>
             </div>
           <div class="layui-form-item">
@@ -124,49 +156,58 @@
           </div>
       </form>
     </div>
-    <script>
-      layui.use(['form','layer','upload'], function(){
-          $ = layui.jquery;
+
+  </body>
+<script>
+    layui.use(['form','layer','upload','element'], function()
+    {
+        $ = layui.jquery;
         var form = layui.form
         ,layer = layui.layer;
-          var upload = layui.upload;
-          var uploadInst = upload.render({
-              elem: '#test1'
-              ,url: '/admin/goods/upload'
-              ,before: function(obj){
-                  layer.load();
+        var upload = layui.upload;
+        var element = layui.element;
 
-              }
-              ,done: function(res){
-                  layer.closeAll('loading'); //关闭loading
-                  //如果上传失败
-                  if(res.code > 0){
-                      return layer.msg('上传失败');
-                  }
-                  var _this = this.item;
-                  // $(_this).parent('.layui-upload').find("input[name='goods_thumb']").val(11111);
-                  $("input[name='goods_thumb']").val('/uploads/'+res.data.src);
-                  // console.log(test);
-                  console.log(res.data.src);
-                  //上传成功
-                  // 显示图片
-                  $('#goods_thumb_img').attr('src','/uploads/'+res.data.src);
-              }
-              ,error: function(){
-                  //演示失败状态，并实现重传
-                  var demoText = $('#demoText');
-                  demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
-                  demoText.find('.demo-reload').on('click', function(){
-                      uploadInst.upload();
-                  });
-              }
+        $('#test1').on('click',function ()
+        {
+            $('#photo_upload').trigger('click');
+            $('#photo_upload').on('change',function () {
+            var obj = this;
+
+            var formData = new FormData($('#goods_form')[0]);
+            $.ajax({
+                url: '/admin/goods/upload',
+                type: 'post',
+                data: formData,
+                // 因为data值是FormData对象，不需要对数据做处理
+                processData: false,
+                contentType: false,
+                success: function(data){
+                    if(data['ServerNo']=='200'){
+                        // 如果成功
+                        $('#goods_thumb_img').attr('src', '/uploads/'+data['ResultData']);
+                        $('input[name=goods_thumb]').val('/uploads/'+data['ResultData']);
+                        $(obj).off('change');
+                    }else{
+                        // 如果失败
+                        alert(data['ResultData']);
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    var number = XMLHttpRequest.status;
+                    var info = "错误号"+number+"文件上传失败!";
+                    // 换成原图
+                    // $('#pic').attr('src', '/file.png');
+                    alert(info);
+                },
+                async: true
+                });
+            });
+
           });
-
 
         //监听提交
         form.on('submit(edit)', function(data){
             var goodid = $("input[name='goodid']").val();
-            //console.log(uid);
             $.ajax({
                 type: 'PUT',
                 url: '/admin/goods/'+goodid,
@@ -187,25 +228,12 @@
                             parent.location.reload();
                         });
                     }
-
                 },
                 error:function(data) {
-                    //console.log(1111111111111111);
-                    // console.log(data.msg);
                 },
             });
           return false;
         });
-
-
-      });
-  </script>
-    <script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();</script>
-  </body>
-
+    });
+</script>
 </html>

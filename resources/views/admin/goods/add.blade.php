@@ -12,7 +12,7 @@
     @include('admin.public.script')
     <style>
         .input_width{
-            width: 600px;
+            width: 188px;
         }
     </style>
 </head>
@@ -22,7 +22,7 @@
         <form class="layui-form" id="goods_form" action="{{ url('admin/goods') }}" method="post">
           <div class="layui-form-item">
               <label for="L_email" class="layui-form-label">
-                  <span class="x-red">*</span>分类
+                  <span class="x-red">*</span>商品分类
               </label>
               <div class="layui-input-inline">
                   <select name="cate_id">
@@ -37,21 +37,12 @@
           </div>
 
             <div class="layui-form-item">
-                <label for="L_goods_title" class="layui-form-label">
-                    <span class="x-red">*</span>文章标题
+                <label for="L_goods_name" class="layui-form-label">
+                    <span class="x-red">*</span>商品名称
                 </label>
                 <div class="layui-input-block">
                     {{csrf_field()}}
-                    <input type="text" id="L_goods_title" name="goods_title" required=""
-                           autocomplete="off" class="layui-input input_width">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="L_goods_editor" class="layui-form-label">
-                    <span class="x-red">*</span>编辑
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="L_goods_editor" name="goods_editor" required=""
+                    <input type="text" id="L_goods_name" name="goods_name" required=""
                            autocomplete="off" class="layui-input input_width">
                 </div>
             </div>
@@ -65,34 +56,73 @@
                     <input type="file" name="photo" id="photo_upload" style="display: none;" />
                 </div>
             </div>
-
-
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label"></label>
                 <div class="layui-input-block">
-                    <img src="" id="goods_thumb_img" style="max-width: 350px; max-height:100px;" alt="">
+                    <img src="" id="goods_thumb_img" style="max-width: 185px; max-height:160px;" alt="">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="L_goods_tag" class="layui-form-label">
-                    <span class="x-red">*</span>关键词
+                <label for="L_goods_price" class="layui-form-label">
+                    <span class="x-red">*</span>商品价格
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_goods_tag" name="goods_tag" required=""
+                    <input type="number" id="L_goods_price" name="goods_price" required=""
                            autocomplete="off" class="layui-input input_width">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="L_goods_tag" class="layui-form-label">
-                    <span class="x-red">*</span>描述
+                <label for="L_goods_stock" class="layui-form-label">
+                    <span class="x-red">*</span>商品库存
                 </label>
-                <div class="layui-input-block">
-                    <textarea placeholder="请输入内容" class="layui-textarea input_width" name="goods_description"></textarea>
+                <div class="layui-input-inline">
+                    <input type="number" id="L_goods_stock" name="goods_stock" required=""
+                           autocomplete="off" class="layui-input input_width">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="L_goods_tag" class="layui-form-label">
-                    <span class="x-red">*</span>内容
+                <label for="L_goods_sales" class="layui-form-label">
+                    <span class="x-red">*</span>商品销量
+                </label>
+                <div class="layui-input-inline">
+                    <input type="number" id="L_goods_sales" name="goods_sales" required=""
+                           autocomplete="off" class="layui-input input_width">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_goods_active" class="layui-form-label">
+                    <span class="x-red">*</span>商品状态
+                </label>
+                <div class="layui-input-inline" style="z-index: 1001">
+                    <select id="L_goods_active" name="goods_active">
+                            <option value="0">上架</option>
+                            <option value="1">下架</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_goods_status" class="layui-form-label">
+                    <span class="x-red">*</span>推荐栏位
+                </label>
+                <div class="layui-input-inline" style="z-index: 1000">
+                    <select id="L_goods_status" name="goods_status">
+                            <option value="0">否</option>
+                            <option value="1">是</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_goods_desc" class="layui-form-label">
+                    <span class="x-red">*</span>商品描述
+                </label>
+                <div class="layui-input-block">
+                    <input type="text" id="L_goods_desc" name="goods_description" required=""
+                           autocomplete="off" class="layui-input input_width">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="" class="layui-form-label">
+                    <span class="x-red">*</span>详情内容
                 </label>
                 <div class="layui-input-block">
                     {{--引入配置文件--}}
@@ -103,7 +133,7 @@
                     <script type="text/javascript" charset="utf-8" src="/ueditor/lang/zh-cn/zh-cn.js"></script>
 
                     {{--编辑器容器--}}
-                    <script id="editor" type="text/plain" name="goods_content" style="width:600px;height:300px;">
+                    <script id="editor" type="text/plain" name="goods_content" style="width:600px;height:300px;z-index: 0">
                     </script>
                     <script type="text/javascript">
                     //实例化编辑器
@@ -147,13 +177,8 @@
                         success: function(data){
                             if(data['ServerNo']=='200'){
                                 // 如果成功
-                                {{--$('#goods_thumb_img').attr('src', '{{ env('QINIU_DOMAIN')  }}'+data['ResultData']);--}}
-                                {{--ver1&ver2--}}
-                                // $('#goods_thumb_img').attr('src', '/uploads/'+data['ResultData']);
-                                // $('input[name=goods_thumb]').val('/uploads/'+data['ResultData']);
-                                // ver3
-                                $('#goods_thumb_img').attr('src', '{{ env('ALIOSS_DOMAIN')  }}'+data['ResultData']);
-                                $('input[name=goods_thumb]').val('{{ env('ALIOSS_DOMAIN')  }}'+data['ResultData']);
+                                $('#goods_thumb_img').attr('src', '/uploads/'+data['ResultData']);
+                                $('input[name=goods_thumb]').val('/uploads/'+data['ResultData']);
                                 $(obj).off('change');
                             }else{
                                 // 如果失败

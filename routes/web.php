@@ -47,5 +47,10 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin','middleware'=>'isLogin'],fu
     Route::resource('cate','CateController');
     //删除所有选中分类路由
     Route::post('cate/del','CateController@delAll');
+
+    //后台商品模块资源路由
+    Route::resource('goods','GoodsController');
+    //商品缩略图上传路由
+    Route::post('goods/upload', 'GoodsController@upload');
 });
 
